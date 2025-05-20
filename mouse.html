@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse Events Interaction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .event-section {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        button {
+            padding: 15px 30px !important;
+            font-size: 1.2rem;
+        }
+        
+        .result {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #6f42c1;
+        }
+        
+        .description {
+            font-style: italic;
+            margin-top: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5 text-center">
+        <h1 class="mb-4">🖱️ Interactive Mouse Events Demo</h1>
+        <p class="lead">This page demonstrates how different mouse events work in JavaScript using buttons. Try clicking, double-clicking, hovering, and right-clicking below!</p>
+
+        <!-- Click -->
+        <div class="event-section">
+            <button id="clickBtn" class="btn btn-primary">Click Me</button>
+            <span class="result" id="clickResult"></span>
+            <p class="description">Clicking the button triggers a simple "click" event.</p>
+        </div>
+
+        <!-- Double Click -->
+        <div class="event-section">
+            <button id="dblClickBtn" class="btn btn-success">Double Click Me</button>
+            <span class="result" id="dblClickResult"></span>
+            <p class="description">Double-clicking activates a different event than a single click.</p>
+        </div>
+
+        <!-- Right Click -->
+        <div class="event-section">
+            <button id="rightClickBtn" class="btn btn-danger">Right Click Me</button>
+            <span class="result" id="rightClickResult"></span>
+            <p class="description">Right-clicking is detected using the <code>contextmenu</code> event.</p>
+        </div>
+
+        <!-- Hover -->
+        <div class="event-section">
+            <button id="mouseOverBtn" class="btn btn-warning">Hover Over Me</button>
+            <span class="result" id="mouseOverResult"></span>
+            <p class="description">Mouse hovering triggers <code>mouseover</code> and <code>mouseout</code> events.</p>
+        </div>
+
+        <!-- Mouse Down -->
+        <div class="event-section">
+            <button id="mouseDownBtn" class="btn btn-info">Press Mouse Down</button>
+            <span class="result" id="mouseDownResult"></span>
+            <p class="description">Pressing and releasing the mouse activates <code>mousedown</code> and <code>mouseup</code>.</p>
+        </div>
+    </div>
+
+    <script>
+        // Click
+        document.getElementById("clickBtn").addEventListener("click", () => {
+            document.getElementById("clickResult").textContent = "Button Clicked!";
+        });
+
+        // Double Click
+        document.getElementById("dblClickBtn").addEventListener("dblclick", () => {
+            document.getElementById("dblClickResult").textContent = "Double Clicked!";
+        });
+
+        // Right Click
+        document.getElementById("rightClickBtn").addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            document.getElementById("rightClickResult").textContent = "Right Clicked!";
+        });
+
+        // Mouse Over
+        const hoverBtn = document.getElementById("mouseOverBtn");
+        const hoverResult = document.getElementById("mouseOverResult");
+
+        hoverBtn.addEventListener("mouseover", () => {
+            hoverResult.textContent = "Mouse is over me!";
+        });
+
+        hoverBtn.addEventListener("mouseout", () => {
+            hoverResult.textContent = "";
+        });
+
+        // Mouse Down / Up
+        const mouseDownBtn = document.getElementById("mouseDownBtn");
+        const mouseDownResult = document.getElementById("mouseDownResult");
+
+        mouseDownBtn.addEventListener("mousedown", () => {
+            mouseDownResult.textContent = "Mouse button pressed!";
+        });
+
+        mouseDownBtn.addEventListener("mouseup", () => {
+            mouseDownResult.textContent = "Mouse button released!";
+        });
+    </script>
+
+</body>
+
+</html>

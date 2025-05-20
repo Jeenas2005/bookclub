@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Cart - Online Book Club</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Your CSS styles here (as in the previous HTML) */
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            color: #0e0e0e;
+            font-family: 'Times New Roman', Times, serif;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: #f6f0f0;
+            box-shadow: 0 4px 15px rgba(8, 7, 7, 0.1);
+            font-family: Arial, sans-serif;
+        }
+        
+        header h1 {
+            margin-left: 40px;
+        }
+        
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-right: 20px;
+            background-color: #0e0e0e;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.2rem;
+            padding: 3px 0px;
+        }
+        
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropbtn {
+            background-color: #f6f0f0;
+            color: #007bff;
+            padding: 14px 20px;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .dropdown:hover .dropbtn {
+            background-color: #ddd;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 160px;
+            z-index: 1;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        p {
+            font-size: 20px;
+        }
+        
+        h1 {
+            margin-top: 2rem;
+            text-align: center;
+            color: #1f85ea;
+        }
+        
+        h2 {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .form-section {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .book-list {
+            margin-top: 2rem;
+        }
+        
+        .book-item {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        
+        .book-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-remove,
+        .btn-mark-read {
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-remove {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+        }
+        
+        .btn-remove:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-mark-read {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+        }
+        
+        .btn-mark-read:hover {
+            background-color: #2ecc71;
+        }
+        
+        .book-select {
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .cart-section {
+            margin-top: 3rem;
+        }
+        
+        .cart-summary {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .cart-item {
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            color: #34495e;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="member.html">
+                <img src="logo.png" alt="Logo" class="rounded-circle" width="50" height="60">
+            </a>
+            <h1 class="text-primary text-left mt-3">SECRET BIBLIOSPHERE</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="review.html">Reviews</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="bookCategoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Book Category
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="bookCategoryDropdown">
+                            <li><a class="dropdown-item" href="fiction.html">Fiction</a></li>
+                            <li><a class="dropdown-item" href="mystery.html">Mystery & Thriller</a></li>
+                            <li><a class="dropdown-item" href="sci-fi.html">Horror</a></li>
+                            <li><a class="dropdown-item" href="fantasy.html">Fantasy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav><br><br>
+    <div class="container">
+        <div class="contact-container">
+            <div class="intro-text">
+                <p>Welcome to the Online Book Club! Here, you can select books, add them to your reading cart, and track the ones you've already read. To get started, simply choose a book from the list, provide your details, and add it to your cart. You
+                    can later mark books as read and manage your collection.</p>
+                <p>If you're passionate about reading and discovering new books, you're in the right place! Let's dive into the world of literature and start building your reading collection.</p>
+            </div>
+            <div class="form-section">
+                <form id="bookForm">
+                    <div class="mb-3">
+                        <h2 class="text-center mb-3">Book Cart Form</h2>
+                        <label for="bookSelect" class="form-label">Select a Book</label>
+                        <select id="bookSelect" class="form-select book-select" required>
+                            <option value="" disabled selected>Select a book</option>
+                            <option value="The Great Gatsby">The Great Gatsby</option>
+                            <option value="1984">1984</option>
+                            <option value="Pride and Prejudice">Pride and Prejudice</option>
+                            <option value="The Hobbit">The Hobbit</option>
+                            <option value="Brave New World">Brave New World</option>
+                            <option value="The Catcher in the Rye">The Catcher in the Rye</option>
+                            <option value="To Kill a Mockingbird">To Kill a Mockingbird</option>
+                            <option value="The Alchemist">The Alchemist</option>
+                            <option value="Little Women">Little Women</option>
+                            <option value="The Book Thief">The Book Thief</option>
+                            <option value="Jane Eyre">Jane Eyre</option>
+                            <option value="Wuthering Heights">Wuthering Heights</option>
+                            <option value="Moby-Dick">Moby-Dick</option>
+                            <option value="Anna Karenina">Anna Karenina</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="readerName" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" placeholder="Enter your name" id="readerName" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="readerContact" class="form-label">Your Phone Number</label>
+                        <input type="text" class="form-control" placeholder="Enter your phone number" id="readerContact" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="readerAddress" class="form-label">Your Address</label>
+                        <input type="text" class="form-control" placeholder="Enter your address" id="readerAddress" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container book-list cart-section ">
+            <h1>🛒 Your Cart</h1>
+            <br>
+            <p>Your cart is where you'll keep track of the books you're planning to read. Once you're done with a book, you can mark it as read and it will move to your "Books You 've Read" section.</p>
+            <div id="cartList"></div>
+
+            <h1>📖 Books You've Read</h1><br>
+            <p>Here you can view all the books you have already completed. It's a great way to track your progress and look back at your reading journey.</p>
+            <div id="readList"></div>
+        </div>
+    </div>
+    <br><br>
+    <footer class="bg-dark text-light text-center py-3 w-100"> &copy; 2024 SECRET BIBLIOSPHERE | All Rights Reserved
+    </footer>
+    <script>
+        const availableBooks = [
+            "The Great Gatsby", "1984", "Pride and Prejudice", "The Hobbit",
+            "Brave New World", "The Catcher in the Rye", "To Kill a Mockingbird",
+            "The Alchemist", "Little Women", "The Book Thief", "Jane Eyre",
+            "Wuthering Heights", "Moby-Dick", "Anna Karenina"
+        ];
+
+        let cart = [];
+        let readBooks = [];
+        fetch('/orders')
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(order => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+        <strong>${order.name}</strong> ordered <em>${order.book}</em><br>
+        Phone: ${order.phone}<br>
+        Address: ${order.address}<br>
+        Order Date: ${new Date(order.orderDate).toLocaleDateString()}
+        <hr>
+      `;
+                    document.body.appendChild(div);
+                });
+            });
+
+
+        // Populate available books dropdown
+        function populateBooks() {
+            const bookSelect = document.getElementById('bookSelect');
+            bookSelect.innerHTML = '<option value="">-- Select a Book --</option>';
+            availableBooks.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book;
+                option.textContent = book;
+                bookSelect.appendChild(option);
+            });
+        }
+
+        // Fetch all books from server
+        async function fetchBooks() {
+            try {
+                const response = await fetch('http://localhost:4000/books');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const books = await response.json();
+                cart = books.filter(book => !book.isRead);
+                readBooks = books.filter(book => book.isRead);
+                renderCart();
+                renderReadList();
+            } catch (error) {
+                console.error('Error fetching books:', error);
+                alert('Failed to fetch books from server.');
+            }
+        }
+
+        // POST a new book
+        document.getElementById('bookForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const book = document.getElementById('bookSelect').value;
+            const name = document.getElementById('readerName').value;
+            const phone = document.getElementById('readerContact').value;
+            const address = document.getElementById('readerAddress').value;
+
+            if (book && name && phone && address) {
+                try {
+                    await fetch('http://localhost:4000/books', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            book,
+                            name,
+                            phone,
+                            address
+                        })
+                    });
+                    fetchBooks();
+                    this.reset();
+                } catch (err) {
+                    alert("Failed to add book to cart.");
+                }
+            }
+        });
+
+        // DELETE a book
+        async function removeFromCart(id) {
+            try {
+                await fetch(`http://localhost:4000/books/${id}`, {
+                    method: 'DELETE'
+                });
+                fetchBooks();
+            } catch (err) {
+                alert("Failed to remove book.");
+            }
+        }
+
+        // PUT mark as read
+        async function markAsRead(id) {
+            try {
+                await fetch(`http://localhost:4000/books/${id}/mark-read`, {
+                    method: 'PUT'
+                });
+                fetchBooks();
+            } catch (err) {
+                alert("Failed to mark book as read.");
+            }
+        }
+
+        // Render unread books in cart
+        function renderCart() {
+            const cartList = document.getElementById('cartList');
+            cartList.innerHTML = '';
+            cart.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'book-item cart-item';
+                div.innerHTML = `
+                    <h5>${item.book}</h5>
+                    <p><strong>Reader:</strong> ${item.name}</p>
+                    <p><strong>Phone:</strong> ${item.phone}</p>
+                    <p><strong>Address:</strong> ${item.address}</p>
+                    <button class="btn-remove" onclick="removeFromCart('${item._id}')">Remove</button>
+                    <button class="btn-mark-read" onclick="markAsRead('${item._id}')">Mark as Read</button>
+                `;
+                cartList.appendChild(div);
+            });
+        }
+
+        // Render read books
+        function renderReadList() {
+            const readList = document.getElementById('readList');
+            readList.innerHTML = '';
+            readBooks.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'book-item cart-item';
+                div.innerHTML = `
+                    <h5>${item.book}</h5>
+                    <p><strong>Reader:</strong> ${item.name}</p>
+                    <p><strong>Phone:</strong> ${item.phone}</p>
+                    <p><strong>Address:</strong> ${item.address}</p>
+                    <span class="text-success fw-bold">✓ Read</span>
+                `;
+                readList.appendChild(div);
+            });
+        }
+
+        // Make functions available globally
+        window.removeFromCart = removeFromCart;
+        window.markAsRead = markAsRead;
+        2005
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            populateBooks();
+            fetchBooks();
+        });
+    </script>
+    <script src="cart.js"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Book Progress Tracker</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            /* Removed overflow: hidden to allow scrolling */
+        }
+        
+        h1 {
+            color: cyan;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        p {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 20px;
+        }
+        /* Navbar styles */
+        
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        
+        nav a:hover {
+            color: cyan;
+        }
+        
+        .container {
+            background-color: white;
+            color: black;
+            width: 30%;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 2;
+            margin-top: 60px;
+            /* Added margin to push the content down */
+        }
+        
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        label {
+            flex: 1;
+            text-align: left;
+            box-sizing: 10px;
+            font-weight: bold;
+            padding-right: 10px;
+        }
+        
+        input,
+        button {
+            padding: 6px 8px;
+            font-size: 15px;
+            border-radius: 8px;
+        }
+        
+        button {
+            width: 10%;
+            padding: 2px 10px;
+            /* Reduced padding */
+            font-size: 16px;
+            /* Smaller font */
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            background-color: darkblue;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            background-color: lightgray;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: green;
+            color: white;
+            line-height: 20px;
+        }
+        
+        .success-message {
+            display: none;
+            color: green;
+            font-weight: bold;
+        }
+        /* Canvas styles */
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+        /* Center content vertically */
+        
+        .main-content {
+            text-align: center;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="member.html">
+                <img src="logo.png" alt="Logo" class="rounded-circle" width="50" height="60">
+            </a>
+            <h1 class="text-primary text-left mt-3">SECRET BIBLIOSPHERE</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="review.html">Reviews</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="bookCategoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Book Category
+                    </a>
+                        <ul class="dropdown-menu" aria-labelledby="bookCategoryDropdown">
+                            <li><a class="dropdown-item" href="fiction.html">Fiction</a></li>
+                            <li><a class="dropdown-item" href="mystery.html">Mystery & Thriller</a></li>
+                            <li><a class="dropdown-item" href="sci-fi.html">Horror</a></li>
+                            <li><a class="dropdown-item" href="fantasy.html">Fantasy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="main-content">
+        <h1>Start Monitoring Your Book Progress Today..</h1><br>
+        <p>The Book Progress Calculator is essential for an online book club as it helps members monitor their reading pace.</p>
+        <p>Stay motivated and achieve your reading goals efficiently.</p>
+        <div id="bookProgress" class="container">
+            <h2>📖 Book Progress Tracker</h2>
+            <p>Track your reading progress and estimate your completion time.</p><br>
+
+            <form id="progressForm">
+                <div class="form-group">
+                    <label for="bookTitle">Book Title:</label>
+                    <input type="text" id="bookTitle" placeholder="Enter book title">
+                </div><br>
+
+                <div class="form-group">
+                    <label for="totalPages">Total Pages:</label>
+                    <input type="number" id="totalPages" placeholder="Enter total pages">
+                </div><br>
+
+                <div class="form-group">
+                    <label for="pagesRead">Pages Read:</label>
+                    <input type="number" id="pagesRead" placeholder="Enter pages read">
+                </div><br>
+
+                <div class="form-group">
+                    <label for="readingSpeed">Reading Speed:</label>
+                    <input type="number" id="readingSpeed" placeholder="Pages per hour">
+                </div><br>
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px;">
+                    <button type="button" onclick="calculateProgress()" style="min-width: 150px; padding: 6px 10px; font-size: 15px;">
+                      Calculate progress
+                    </button><br>
+                    <button type="button" onclick="resetForm()" style="min-width: 150px; padding: 6px 10px; font-size: 15px; background-color: rgb(6, 175, 23); color: white; border: none; border-radius: 5px;">
+                      Reset
+                    </button>
+                </div><br>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar">0%</div>
+                </div>
+
+                <p id="result"></p>
+                <p id="timeResult"></p>
+                <p id="successMessage" class="success-message">🎉 Congratulations! You have completed the book! 🎉</p>
+        </div>
+    </div>
+    </form>
+    <script>
+        function calculateProgress() {
+
+            // Form validation
+
+            const bookTitle = document.getElementById("bookTitle").value;
+            const totalPages = parseInt(document.getElementById("totalPages").value);
+            const pagesRead = parseInt(document.getElementById("pagesRead").value);
+            const readingSpeed = parseFloat(document.getElementById("readingSpeed").value);
+
+            const progressBar = document.getElementById("progressBar");
+            const result = document.getElementById("result");
+            const timeResult = document.getElementById("timeResult");
+            const successMessage = document.getElementById("successMessage");
+
+
+            // Handle case where Pages Read is 0
+            if (pagesRead === 0) {
+                progressBar.style.width = "0%";
+                progressBar.textContent = "0%";
+                result.innerHTML = `📖 You have read <strong>${pagesRead}</strong> out of <strong>${totalPages}</strong> pages.`;
+                timeResult.innerHTML = `⏳ You haven't read any pages yet. Please start reading!`;
+                successMessage.style.display = "none";
+                return;
+            }
+
+            // Handle case where Reading Speed is 1
+            if (readingSpeed === 1) {
+
+                let progress = (pagesRead / totalPages) * 100;
+                progressBar.style.width = progress + "%";
+                progressBar.textContent = Math.round(progress) + "%";
+                let remainingPages = totalPages - pagesRead;
+                let hoursRequired = remainingPages / readingSpeed;
+                let daysRequired = Math.ceil(hoursRequired / 2);
+                result.innerHTML = `📖 You have read <strong>${pagesRead}</strong> out of <strong>${totalPages}</strong> pages.`;
+                timeResult.innerHTML = `⏳ Estimated time to finish: <strong>${daysRequired}</strong> days (${hoursRequired.toFixed(2)} hours).`;
+                successMessage.style.display = progress === 100 ? "block" : "none";
+                return;
+            }
+
+            if (isNaN(totalPages) || isNaN(pagesRead) || isNaN(readingSpeed) || totalPages <= 0 || pagesRead < 0 || pagesRead > totalPages || readingSpeed <= 0) {
+                result.innerHTML = `❌ Please enter valid numbers.`;
+                progressBar.style.width = "0%";
+                progressBar.textContent = "0%";
+                timeResult.innerHTML = "";
+                successMessage.style.display = "none";
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem("bookTitle", bookTitle);
+            localStorage.setItem("totalPages", totalPages);
+            localStorage.setItem("pagesRead", pagesRead);
+            localStorage.setItem("readingSpeed", readingSpeed);
+
+            const progress = (pagesRead / totalPages) * 100;
+            progressBar.style.width = progress + "%";
+            progressBar.textContent = Math.round(progress) + "%";
+
+            const remainingPages = totalPages - pagesRead;
+            const hoursRequired = remainingPages / readingSpeed;
+            const daysRequired = Math.ceil(hoursRequired / 2);
+
+            result.innerHTML = `📖 You have read <strong>${pagesRead}</strong> out of <strong>${totalPages}</strong> pages.`;
+            timeResult.innerHTML = `⏳ Estimated time to finish: <strong>${daysRequired}</strong> days (${hoursRequired.toFixed(2)} hours).`;
+
+            successMessage.style.display = progress === 100 ? "block" : "none";
+        }
+
+        function resetForm() {
+            document.getElementById("bookTitle").value = "";
+            document.getElementById("totalPages").value = "";
+            document.getElementById("pagesRead").value = "";
+            document.getElementById("readingSpeed").value = "";
+
+            document.getElementById("progressBar").style.width = "0%";
+            document.getElementById("progressBar").textContent = "0%";
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("timeResult").innerHTML = "";
+            document.getElementById("successMessage").style.display = "none";
+
+            localStorage.clear();
+        }
+
+        // Load saved inputs and recalculate on page load
+        window.onload = function() {
+            const title = localStorage.getItem("bookTitle");
+            const total = localStorage.getItem("totalPages");
+            const read = localStorage.getItem("pagesRead");
+            const speed = localStorage.getItem("readingSpeed");
+
+            if (title && total && read && speed) {
+                document.getElementById("bookTitle").value = title;
+                document.getElementById("totalPages").value = total;
+                document.getElementById("pagesRead").value = read;
+                document.getElementById("readingSpeed").value = speed;
+                calculateProgress();
+            }
+        };
+    </script>
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+        & copy; 2024 SECRET BIBLIOSPHERE | All Rights Reserved
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+</body>
+
+</html>
